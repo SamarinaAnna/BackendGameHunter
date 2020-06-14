@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ad</title>
+</head>
+<body>
+<a href="{{url_for('main')}}">Main page</a>
+
+<h3>Games list</h3>
+{% for message in messages %}
+<div>{{ message.date }}&nbsp;{{ message.time }} <b>#{{ message.place }}</b> {{ message.quantityPlayers }} {{ message.nameGame }}
+{{ message.duration }} <br> {{ message.description }} <br>
+    {% for player in recordedPlayers %}
+        {{ player.name }}&nbsp;{{ player.surname }} <br>
+    {% endfor %}
+</div>
+{% endfor %}
+
+</body>
+</html>

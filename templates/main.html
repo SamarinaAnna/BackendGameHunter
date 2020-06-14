@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+</head>
+<body>
+<h2>Game</h2>
+<form method="post" action="/add_message">
+    <input type="date" name="date">
+    <input type="time" name="time">
+    <input type="text" name="place">
+    <input type="number" name="quantity">
+    <input type="text" name="game_name">
+    <input type="text" name="duration">
+    <input type="text" name="description">
+    <button type="submit">Add message</button>
+</form>
+
+<h3>Games list</h3>
+{% for message in messages %}
+<div>{{ message.date }}&nbsp;{{ message.time }} <b>#{{ message.place }}</b> {{ message.quantity }} {{ message.game_name }}
+{{ message.duration }}  <br> {{ message.description }} <br>
+    {% for player in message.recordedPlayers %}
+        {{ player.name }}&nbsp;{{ player.surname }} <br>
+    {% endfor %}<br><br>
+</div>
+{% endfor %}
+
+</body>
+</html>
