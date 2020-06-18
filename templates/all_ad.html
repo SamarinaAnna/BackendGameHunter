@@ -2,17 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ad</title>
+    <title>Игры</title>
 </head>
 <body>
-
 <h3>Games list</h3>
 {% for message in messages %}
-<div>{{ message.date }}&nbsp;{{ message.time }} <b>#{{ message.place }}</b> {{ message.quantityPlayers }} {{ message.nameGame }}
-{{ message.duration }} <br> {{ message.description }} <br>
-    {% for player in recordedPlayers %}
+<div>{{ message.date }}&nbsp;{{ message.time }} <b>#{{ message.place }}</b> {{ message.quantity }} {{ message.game_name }}
+{{ message.duration }}  <br> {{ message.description }} <br>
+    {% for player in message.recordedPlayers %}
         {{ player.name }}&nbsp;{{ player.surname }} <br>
-    {% endfor %}
+    {% endfor %}<br><br>
 </div>
 {% endfor %}
 

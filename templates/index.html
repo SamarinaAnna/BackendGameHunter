@@ -6,20 +6,9 @@
 </head>
 <body>
 <h1>Hello, user</h1>
-<a href="{{url_for('form_for_add_ad')}}">Main page</a>
+<a href="{{url_for('login')}}">Войти</a>
 
-<h3>Games list</h3>
-{% for message in messages %}
-<div>{{ message.date }}&nbsp;{{ message.time }} <b>#{{ message.place }}</b> {{ message.quantityPlayers }} {{ message.nameGame }}
-{{ message.duration }} <br> {{ message.description }} <br>
-    {% for player in message.recordedPlayers %}
-        {{ player.name }}&nbsp;{{ player.surname }} <br>
-    {% endfor %}
-</div>
-<a href="{{ url_for('add_player', ad_id = message._id) }}">Записаться</a>
-<a href="{{ url_for('dell_player', ad_id = message._id) }}">Отписаться</a>
-<br><br>
-{% endfor %}
+<h3>Информация о нас</h3>
 
 </body>
 </html>

@@ -2,19 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ad</title>
+    <title>Greetings</title>
 </head>
 <body>
+<h1>Hello, {{ user.name }}</h1>
 
-<h3>Games list</h3>
-{% for message in messages %}
-<div>{{ message.date }}&nbsp;{{ message.time }} <b>#{{ message.place }}</b> {{ message.quantityPlayers }} {{ message.nameGame }}
-{{ message.duration }} <br> {{ message.description }} <br>
-    {% for player in recordedPlayers %}
-        {{ player.name }}&nbsp;{{ player.surname }} <br>
-    {% endfor %}
-</div>
-{% endfor %}
+<h3>Gamer</h3>
+<div>{{ user.name }}&nbsp;{{ user.surname }} <b>#{{ user.phone }}</b> {{ user.email }}</div>
 
 <a href="{{url_for('get_person')}}">Мой профиль</a>
 <a href="{{url_for('my_ad')}}">Мои объявления</a>

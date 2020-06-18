@@ -1,11 +1,6 @@
-from collections import namedtuple
-
-from werkzeug.security import generate_password_hash
-
 import gameHunter
-from flask import Flask, render_template, redirect, url_for, request, abort, jsonify, make_response, session, flash, g
-from flask_restful import Api, Resource, reqparse
-from flask_login import login_user, logout_user, current_user, login_required
+from flask import Flask, render_template, redirect, url_for, request, jsonify, make_response, session, flash, g
+from flask_restful import Api
 from bson.objectid import ObjectId
 
 
@@ -26,10 +21,17 @@ app.config.update(dict(
     USERNAME='admin',
     PASSWORD='default'
 ))
-#app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 #///////////////////////////////////////////////////////////////
 
 api = Api(app)
+
+
+#первая страница "о нас"
+@app.route('/', methods=['GET'])
+@app.route('/index', methods=['GET'])
+def index():
+    return render_template('index.html')
+
 
 #вход///////////////////////////////////////////////////////////////////////////
 @app.route('/login', methods=['GET', 'POST'])
@@ -43,33 +45,11 @@ def login():
             g.user = k
             global user_string
             user_string = k
-            return redirect(url_for('index'))
+            print(user_string)
+            return redirect(url_for('get_person'))
         else: error = 'Invalid username or password'
     return render_template('login.html', error=error)
-#@app.route('/login', methods=['GET', 'POST'])
-#def login():
-#    error = None
-#    if request.method == 'POST':
-#        if request.form['username'] != app.config['USERNAME']:
-#            error = 'Invalid username'
-#        elif request.form['password'] != app.config['PASSWORD']:
-#            error = 'Invalid password'
-#        else:
-#            session['logged_in'] = True
-#            flash('You were logged in')
-#            return redirect(url_for('main'))
-#    return render_template('login.html', error=error)
 
-#выход
-
-@app.route('/logout')
-def logout():
-    session.pop('logged_in', None)
-    flash('You were logged out')
-    #g.user = None
-    global user_string
-    user_string = ""
-    return redirect(url_for('index'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -92,19 +72,11 @@ def register():
 
     return render_template('register.html')
 
+#профиль пользователя
+@app.route('/get_person', methods=['GET'])
+def get_person():
+    return render_template('get_person.html', user=user_string)
 
-#первая страница + список объявлений (аргументы не нужны)
-@app.route('/', methods=['GET'])
-@app.route('/index', methods=['GET'])
-def index():
-    u = gameHunter.AdsDateSort()
-    return render_template('index.html', messages=u)
-
-#страница с формами для добавления объявления
-@app.route('/main', methods=['GET'])
-def form_for_add_ad():
-    u = gameHunter.AdsDateSort()
-    return render_template('main.html', messages=u)
 
 #объявления конкретного пользователя (залогиневшегося)
 @app.route('/my_ad', methods=['GET'])
@@ -113,7 +85,43 @@ def my_ad():
     t = gameHunter.SpecificUserAds(gameHunter.coll.find_one({"_id": user_string['_id']}, {"_id": 1}))
     return render_template('my_ad.html', messages=t)
 
-#обработка полученного объявления
+
+#страница с формами для добавления объявления
+@app.route('/form_for_add_ad', methods=['GET'])
+def form_for_add_ad():
+    return render_template('form_for_add_ad.html')
+
+
+#страница с объявлениями
+@app.route('/all_ad', methods=['GET'])
+def all_ad():
+    u = gameHunter.AdsDateSort()
+    return render_template('all_ad.html', messages=u)
+
+
+#выход
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('You were logged out')
+    #g.user = None
+    global user_string
+    user_string = ""
+    return redirect(url_for('index'))
+
+
+
+
+
+
+#страница с формами для удаления объявления (?)
+@app.route('/form_for_del', methods=['GET'])
+def form_for_dell_ad():
+    u = gameHunter.AdsDateSort()
+    return render_template('form_for_del.html', messages=u)
+
+
+#обработка полученного объявления (нет html)
 @app.route('/add_message', methods=['POST'])
 def add_message():
     global user_string
@@ -134,13 +142,9 @@ def add_message():
         return render_template('index.html', messages=u)
     else: return render_template('login.html')
 
-#страница с формами для удаления объявления
-@app.route('/form_for_del', methods=['GET'])
-def form_for_dell_ad():
-    u = gameHunter.AdsDateSort()
-    return render_template('form_for_del.html', messages=u)
 
-#обработка полученного объявления
+
+#обработка полученного объявления (нет html)
 @app.route('/del_message', methods=['POST'])
 def del_message():
     global user_string
@@ -159,7 +163,7 @@ def del_message():
         return render_template('index.html', messages=u)
     else: return render_template('login.html')
 
-#запись на игру
+#запись на игру (нет html)
 @app.route('/add_player/<ad_id>')
 def add_player(ad_id):
     global user_string
@@ -174,7 +178,7 @@ def add_player(ad_id):
         return render_template('index.html', messages=u)
     else: return render_template('login.html')
 
-#отписаться от игры
+#отписаться от игры (нет html)
 @app.route('/dell_player/<ad_id>')
 def dell_player(ad_id):
     global user_string
@@ -194,19 +198,5 @@ def dell_player(ad_id):
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
-#список людей (нет ф-ии, использована заглушка)
-#@app.route('/get_persons', methods=['GET'])
-#def get_persons():
-#    return render_template('get_persons.html', gamers=gamers)
-
-#вывод человека по почте (нет ф-ии, использована заглушка)
-#@app.route('/get_person/<email>', methods=['GET'])
-#def get_person(email):
-#   lis_per = []
-#    for per in gamers:
-#        print(per.email)
-#        if per.email == email:
-#            lis_per.append(per)
-#    return render_template('get_person.html', gamers=lis_per)
 
 app.run()
