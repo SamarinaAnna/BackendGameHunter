@@ -22,6 +22,7 @@ print("5 - вывод объявлений конкретного пользов
 print("6 - удаление своего объявления(нужно ввести данные)")
 print("7 - запись на объявление")
 print("8 - отписаться от участия")
+print("9 - просмотр объявлений, на которые записан")
 
 global сheck
 check = int(input('Выберите действие:'))
@@ -135,7 +136,13 @@ def SpecificUserAds(idUser):
 def DeleteAd(idCreator, date, time, place, quantityPlayers,nameGame, duration):
     coll1.delete_one({"idCreator":str(idCreator['_id']), "date":date, "time":time, "place":place, "quantityPlayers":quantityPlayers, "nameGame":nameGame, "duration":duration})
     
-
+def RecordedAds(idUser):
+    dataUser = coll.find_one({"_id": idUser['_id']},{"password":0})
+    cur = coll1.find({"recordedPlayers":dataUser})
+    list1 = []
+    for doc in cur:
+        list1.append(doc)
+    return list1
             
     
 if(check == 2):
@@ -215,4 +222,9 @@ elif(check == 6):
     duration = input('Введите продолжительность игры: ')
     DeleteAd(idCreator, date, time, place, quantityPlayers,nameGame, duration)
 
+elif(check == 9):
+    print("Вывод всех объявлений, на которые записан пользователь:")
+    idUser = coll.find_one({"_id": ObjectId("5ee23044897ca7e7c49a1d19")},{"_id":1})
+    t = RecordedAds(idUser)
+    print(t)
 
