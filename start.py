@@ -45,7 +45,7 @@ def login():
             g.user = k
             global user_string
             user_string = k
-            print(user_string)
+            #print(user_string)
             return redirect(url_for('get_person'))
         else: error = 'Invalid username or password'
     return render_template('login.html', error=error)
@@ -98,6 +98,22 @@ def all_ad():
     u = gameHunter.AdsDateSort()
     return render_template('all_ad.html', messages=u)
 
+#страница с объявлениями, на которые записан пользователь
+@app.route('/all_ad_on_record', methods=['GET'])
+def all_ad_on_record():
+    global user_string
+    if user_string != "":
+        u = gameHunter.AdsDateSort()
+        temp = []
+        for i in u:
+            for j in i['recordedPlayers']:
+                if j['_id'] == user_string['_id']:
+                    temp.append(i)
+
+        return render_template('all_ad_on_record.html', messages=temp)
+    else:
+        return render_template('login.html')
+
 
 #выход
 @app.route('/logout')
@@ -110,15 +126,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-
-
-
-
-#страница с формами для удаления объявления (?)
-@app.route('/form_for_del', methods=['GET'])
-def form_for_dell_ad():
-    u = gameHunter.AdsDateSort()
-    return render_template('form_for_del.html', messages=u)
 
 
 #обработка полученного объявления (нет html)
@@ -137,30 +144,30 @@ def add_message():
 
         gameHunter.createAd(str(user_string['_id']), str(date), str(time), str(place), int(quantityPlayers), str(nameGame), str(duration), str(description), recordedPlayers)
 
-        u = gameHunter.AdsDateSort()
-
-        return render_template('index.html', messages=u)
+        return redirect(url_for('my_ad'))
     else: return render_template('login.html')
 
 
 
-#обработка полученного объявления (нет html)
-@app.route('/del_message', methods=['POST'])
-def del_message():
-    global user_string
+#обработка удаления объявления (нет html)
+@app.route('/del_message/<ad_id>')
+def del_message(ad_id):
+    global user_string, temp
     if user_string != "":
-        date = request.form['date']
-        time = request.form['time']
-        place = request.form['place']
-        quantityPlayers = request.form['quantity']
-        nameGame = request.form['game_name']
-        duration = request.form['duration']
-
-        gameHunter.DeleteAd(user_string, str(date), str(time), str(place), int(quantityPlayers), str(nameGame), str(duration))
-
         u = gameHunter.AdsDateSort()
+        for i in u:
+            if i['_id'] == ObjectId(ad_id):
+                temp = i
+        date = str(temp['date'])
+        time = str(temp['time'])
+        place = str(temp['place'])
+        quantityPlayers = int(temp['quantityPlayers'])
+        nameGame = str(temp['nameGame'])
+        duration = str(temp['duration'])
 
-        return render_template('index.html', messages=u)
+        gameHunter.DeleteAd(user_string, date, time, place, quantityPlayers, nameGame, duration)
+
+        return redirect(url_for('my_ad'))
     else: return render_template('login.html')
 
 #запись на игру (нет html)
@@ -173,9 +180,7 @@ def add_player(ad_id):
 
         gameHunter.RecordingAnAd(idAd, idUser)
 
-        u = gameHunter.AdsDateSort()
-
-        return render_template('index.html', messages=u)
+        return redirect(url_for('all_ad'))
     else: return render_template('login.html')
 
 #отписаться от игры (нет html)
@@ -188,9 +193,7 @@ def dell_player(ad_id):
 
         gameHunter.UnsubscribeFromParticipation(idAd1, idUser1)
 
-        u = gameHunter.AdsDateSort()
-
-        return render_template('index.html', messages=u)
+        return redirect(url_for('all_ad'))
     else: return render_template('login.html')
 
 #при ошибке (теоретически, не нужно, можно удалить)
