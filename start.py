@@ -59,16 +59,27 @@ def register():
     email = request.form.get('email')
     password = request.form.get('password')
     password2 = request.form.get('password2')
+    print(name)
 
     if request.method == 'POST':
-        if not (name or surname or email or password or password2):
+        if not (password or password2):
+            flash('Please, fill all fields!')
+        elif not name or not surname or not email:
             flash('Please, fill all fields!')
         elif password != password2:
             flash('Passwords are not equal!')
         else:
             gameHunter.registrationUser(str(name), str(surname), str(phone), str(email), password)
 
-            return redirect(url_for('login'))
+            k = gameHunter.inputUser(str(email), password)
+            if k:
+                session['logged_in'] = True
+                flash('You were logged in')
+                g.user = k
+                global user_string
+                user_string = k
+
+            return redirect(url_for('get_person'))
 
     return render_template('register.html')
 
@@ -145,7 +156,7 @@ def add_message():
         gameHunter.createAd(str(user_string['_id']), str(date), str(time), str(place), int(quantityPlayers), str(nameGame), str(duration), str(description), recordedPlayers)
 
         return redirect(url_for('my_ad'))
-    else: return render_template('login.html')
+    else: return redirect(url_for('login'))
 
 
 
@@ -179,6 +190,10 @@ def add_player(ad_id):
         idUser = gameHunter.coll.find_one({"_id": ObjectId(user_string['_id'])}, {"_id": 1})
 
         gameHunter.RecordingAnAd(idAd, idUser)
+
+        #u = gameHunter.AdsDateSort()
+
+        #return render_template('all_ad.html', messages=u)
 
         return redirect(url_for('all_ad'))
     else: return render_template('login.html')
