@@ -83,10 +83,9 @@ def RecordingAnAd(idAd, idUser):
         list3 = []
         list3 = coll1.find_one({"_id": idAd['_id']},{"_id":0, "recordedPlayers":1})
         itog = list3['recordedPlayers']
-        if(len(itog)==1):
-            if(dataUser == itog[0]):
-                print("Такой пользователь уже записан")
-                return None
+        if(dataUser == itog[0]):
+            print("Такой пользователь уже записан")
+            return None
         else:
             for person in itog:
                 if(dataUser == person):
