@@ -59,7 +59,6 @@ def register():
     email = request.form.get('email')
     password = request.form.get('password')
     password2 = request.form.get('password2')
-    print(name)
 
     if request.method == 'POST':
         if not (password or password2):
@@ -98,7 +97,7 @@ def my_ad():
 
 
 #страница с формами для добавления объявления
-@app.route('/form_for_add_ad', methods=['GET'])
+@app.route('/form_for_add_ad', methods=['GET', 'POST'])
 def form_for_add_ad():
     return render_template('form_for_add_ad.html')
 
@@ -139,24 +138,36 @@ def logout():
 
 
 
-#обработка полученного объявления (нет html)
+#обработка полученного объявления (нет html)///////////////////////////////////////////////////////////////////////////////////////
 @app.route('/add_message', methods=['POST'])
 def add_message():
     global user_string
+    error = None
     if user_string != "":
-        date = request.form['date']
-        time = request.form['time']
-        place = request.form['place']
+
+        date = str(request.form['date'])
+        time = str(request.form['time'])
+        place = str(request.form['place'])
         quantityPlayers = request.form['quantity']
-        nameGame = request.form['game_name']
-        duration = request.form['duration']
-        description = request.form['description']
+        nameGame = str(request.form['game_name'])
+        duration = str(request.form['duration'])
+        description = str(request.form['description'])
         recordedPlayers = []
 
-        gameHunter.createAd(str(user_string['_id']), str(date), str(time), str(place), int(quantityPlayers), str(nameGame), str(duration), str(description), recordedPlayers)
+        if request.method == 'POST':
+            if not date or not time or not place or not duration or not quantityPlayers or not nameGame:
+                error = 'Please, fill all fields!'
+            elif date.isspace() or time.isspace() or place.isspace() or duration.isspace() or quantityPlayers.isspace() or nameGame.isspace():
+                error = 'Please, fill all fields!'
+            else:
+                gameHunter.createAd(str(user_string['_id']), str(date), str(time), str(place), int(quantityPlayers),
+                                    str(nameGame), str(duration), str(description), recordedPlayers)
 
-        return redirect(url_for('my_ad'))
-    else: return redirect(url_for('login'))
+                return redirect(url_for('my_ad'))
+
+        return render_template('form_for_add_ad.html', error=error)
+    else:
+        return redirect(url_for('login'))
 
 
 
@@ -184,16 +195,20 @@ def del_message(ad_id):
 #запись на игру (нет html)
 @app.route('/add_player/<ad_id>')
 def add_player(ad_id):
-    global user_string
+    global user_string, temp
     if user_string != "":
+
         idAd = gameHunter.coll1.find_one({"_id": ObjectId(ad_id)}, {"_id": 1})
         idUser = gameHunter.coll.find_one({"_id": ObjectId(user_string['_id'])}, {"_id": 1})
 
-        gameHunter.RecordingAnAd(idAd, idUser)
+        u = gameHunter.AdsDateSort()
+        for i in u:
+            if i['_id'] == ObjectId(ad_id):
+                temp = i
 
-        #u = gameHunter.AdsDateSort()
+        if temp['dataCreator']['_id'] != idUser['_id']:
 
-        #return render_template('all_ad.html', messages=u)
+            gameHunter.RecordingAnAd(idAd, idUser)
 
         return redirect(url_for('all_ad'))
     else: return render_template('login.html')
