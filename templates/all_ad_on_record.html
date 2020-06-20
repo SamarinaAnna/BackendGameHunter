@@ -1,30 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Игры</title>
-</head>
-<a href="{{ url_for('all_ad') }}">Все игры</a>
-<body>
-<h3>Games list</h3>
-{% for message in messages %}
-<div>{{ message.date }}&nbsp;{{ message.time }} <b>#{{ message.place }}</b>
-    {{ message.quantityPlayers }} {{ message.nameGame }}
-{{ message.duration }}  <br> {{ message.description }} <br>
-    {% for player in message.recordedPlayers %}
-        {{ player.name }}&nbsp;{{ player.surname }} <br>
-    {% endfor %}
-</div>
-<a href="{{ url_for('add_player', ad_id = message._id) }}">Записаться</a>
-<a href="{{ url_for('dell_player', ad_id = message._id) }}">Отписаться</a>
-<br><br>
-{% endfor %}
+{% extends "portal.html" %}
 
-<a href="{{url_for('get_person')}}">Мой профиль</a>
-<a href="{{url_for('my_ad')}}">Мои объявления</a>
-<a href="{{url_for('form_for_add_ad')}}">Создать объявление</a>
-<a href="{{url_for('all_ad')}}">Все объявления</a>
-<a href="{{url_for('logout')}}">Выход</a>
+{% block title %}GH | All ads{% endblock %}
 
-</body>
-</html>
+{% block content %}
+<div class="ad-form">
+    <span class="ad-form-title">
+      <a class="txt4" href="{{url_for('all_ad')}}">Все объявления</a> &#160; | &#160;
+      <a class="txt5" href="{{url_for('all_ad_on_record')}}">Участвую </a> 
+    </span>
+    <div class="scroll_div">
+      {% for message in messages %}
+          <div class="ads_form">
+              Автор: {{message.dataCreator.name}}&nbsp;{{message.dataCreator.surname}}&nbsp;&nbsp;|
+              &nbsp;{{message.dataCreator.email}}&nbsp;&nbsp;
+              {% if message.dataCreator.phone != "null" %}
+                {{message.dataCreator.phone}}
+              {% endif %}
+              <br>
+              Дата: {{(message.date)[8:10]+"."+(message.date)[5:7]+"."+(message.date)[0:4]}} <br>
+              Время: {{message.time}} <br>
+              Место: {{message.place}} <br>
+              Количество человек: {{message.quantityPlayers}}<br>
+              Названия игр: {{message.nameGame}}<br>
+              Предполагаемая длительность: {{message.duration}}<br>
+              Описание: {{message.description}}<br>
+              Участники: <br>
+              <div class="participants">
+                  {% for player in message.recordedPlayers %}
+                    &bull; {{player.name}}&nbsp;{{player.surname}}<br>
+                  {% endfor %}
+              </div>
+              <div class="text-btn-ads">
+                  <a class="txt2 txt3" href="{{url_for('dell_player', ad_id = message._id)}}">&#10008; Отписаться </a>
+              </div>
+          </div>
+      {% endfor %} 
+    </div>
+  </div>
+{% endblock %}

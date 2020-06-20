@@ -1,53 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>Register page</h1>
+<html lang="ru">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <link rel="icon" href="{{ url_for( 'static', filename='image/em.ico', v=1)}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GH | Registration</title>
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='css/normalize.css', v=1)}}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='css/GH.css', v=1)}}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='css/GH_P.css', v=1)}}" type="text/css">
+  </head>
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+  <body background="{{ url_for( 'static', filename='image/fon1.jpg', v=1)}}"> 
+    <div>
+        <img class="pic" name = 'img' src = "{{ url_for( 'static', filename='image/top.png')}}"/>
 
-<form method="POST">
-    <table>
-        <tr>
-            <td>Name</td>
-            <td><input type="text" name="name"></td>
-        </tr>
-        <tr>
-            <td>Surname</td>
-            <td><input type="text" name="surname"></td>
-        </tr>
-        <tr>
-            <td>Phone</td>
-            <td><input type="text" name="phone"></td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td><input type="text" name="email"></td>
-        </tr>
-        <tr>
-            <td>Password</td>
-            <td><input type="password" name="password"></td>
-        </tr>
-        <tr>
-            <td>Password retype</td>
-            <td><input type="password" name="password2"></td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="Register"></td>
-        </tr>
-    </table>
-</form>
-<a href="{{url_for('login')}}">Войти</a>
-</body>
+          <div class="wrap-reg">
+            <form class="reg-form validate-form" action="{{url_for('register')}}" method="post">
+              <span class="login100-form-title">
+                Регистрация
+              </span>
+
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  <ul class=error>
+                  {% for message in messages %}
+                    <li>Ошибка: {{ message }}</li>
+                  {% endfor %}
+                  </ul>
+                {% endif %}
+              {% endwith %}
+
+              <div class="wrap-input100 validate-input" >
+                <input class="input100" required type="text"  name="name" placeholder="Имя">
+                <span class="focus-input100"></span>
+                <span class="symbol-input100"></span>
+              </div>
+
+              <div class="wrap-input100 validate-input" >
+                <input class="input100" required  type="text" name="surname" placeholder="Фамилия">
+                <span class="focus-input100"></span>
+                <span class="symbol-input100"></span>
+              </div>
+
+              <div class="wrap-input100 validate-input" >
+                <input class="input100" type="text" name="phone" placeholder="Телефон (необязательно)">
+                <span class="focus-input100"></span>
+                <span class="symbol-input100"></span>
+              </div>
+    
+              <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                <input class="input100" required pattern=".*@.*" type="text" name="email" placeholder="Email">
+                <span class="focus-input100"></span>
+                <span class="symbol-input100"></span>
+              </div>
+    
+              <div class="wrap-input100 validate-input" data-validate = "Password is required">
+                <input class="input100" required  type="password" name="password" placeholder="Пароль">
+                <span class="focus-input100"></span>
+                <span class="symbol-input100"></span>
+              </div>
+
+              <div class="wrap-input100 validate-input" data-validate = "Password is required">
+                <input class="input100" required  type="password" name="password2" placeholder="Повторите пароль">
+                <span class="focus-input100"></span>
+                <span class="symbol-input100"></span>
+              </div>
+              
+              <div class="container-login100-form-btn">
+                <input class="login100-form-btn" type="submit" value="Зарегистрироваться">
+              </div>
+    
+              <div class="text-center">
+                <a class="txt2" href="{{url_for('login')}}">Назад</a>
+              </div>
+
+            </form>
+          </div>
+          <br><br>
+    </div>
+  </body>
 </html>

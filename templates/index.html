@@ -1,14 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Greetings</title>
-</head>
-<body>
-<h1>Hello, user</h1>
-<a href="{{url_for('login')}}">Войти</a>
+<html lang="ru">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <link rel="icon" href="{{ url_for( 'static', filename='image/em.ico', v=1)}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Game Hunter</title>
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='css/normalize.css', v=1)}}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='css/GH.css', v=1)}}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='css/GH_P.css', v=1)}}" type="text/css">
+  </head>
 
-<h3>Информация о нас</h3>
+  <body background="{{ url_for( 'static', filename='image/fon1.jpg', v=1)}}"> 
+    <div>
+        <img class="pic" name = 'img' src = "{{ url_for( 'static', filename='image/top.png')}}" />
 
-</body>
+          <div class="wrap-login100 info dop">
+            <span class="login100-form-title">
+              Дорбро пожаловать на Game Hunter!
+            </span>
+            <div class="text_info">
+              <div>
+                <p>Этот портал предназначен для поиска компаний для настольных игр. </p>
+                <p>Здесь вы можете посмотреть объявления других пользователей и записаться к ним на игру. 
+                Если вдруг ваши планы изменились, то вы с легкостью можете отписаться от участия в игре. </p>
+              </div>
+              <div class="left_info">
+                <p>Дома лежит игра, но нет участников - создайте своё объявление, и компания найдётся.
+                Если вы хотите весело провести время, то вам сюда. </p>
+                <br>
+                <p>Появились какие-то вопросы - смело пишите на нашу почту: gamehunterquestions@mail.ru </p>
+              </div>
+              <span class="cap_info">
+                <img  src = "{{ url_for( 'static', filename='image/cap.png')}}" />
+              </span> 
+               
+            </div>
+     
+            <div class="go_div">
+              <a class="menu-btn a-btn" href="{{url_for('login')}}">Вперёд</a>
+            </div>
+          </div>
+          <br><br>
+
+    </div>
+  </body>
 </html>

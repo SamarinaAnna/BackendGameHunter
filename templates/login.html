@@ -1,16 +1,53 @@
 <!DOCTYPE html>
-{% extends "layout.html" %}
-{% block body %}
-  <h2>Login</h2>
-  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-  <form action="{{ url_for('login') }}" method=post>
-    <dl>
-      <dt>Email:
-      <dd><input type=text name=username>
-      <dt>Password:
-      <dd><input type=password name=password>
-      <dd><input type=submit value=Login>
-    </dl>
-  </form>
-<a href="{{url_for('register')}}">Зарегистрироваться</a>
-{% endblock %}
+<html lang="ru">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <link rel="icon" href="{{ url_for( 'static', filename='image/em.ico', v=1)}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GH | Login</title>
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='css/normalize.css', v=1)}}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='css/GH.css', v=1)}}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='css/GH_P.css', v=1)}}" type="text/css">
+  </head>
+
+  <body background="{{ url_for( 'static', filename='image/fon1.jpg', v=1)}}"> 
+    <div>
+        <img class="pic" name = 'img' src = "{{ url_for( 'static', filename='image/top.png')}}"  />
+
+          <div class="wrap-login100">
+            <div class="login100-pic js-tilt" data-tilt>
+              <img src="{{ url_for( 'static', filename='image/hunter.png')}}" alt="IMG">
+            </div>
+    
+            <form class="login100-form validate-form" action="{{url_for('login')}}" method="post">
+              <span class="login100-form-title">
+                Вход
+              </span>
+
+              {% if error %}<div class=error>Ошибка: {{ error }}</div>{% endif %}
+    
+              <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                <input class="input100" required autocomplete="on" type="text" name="username" placeholder="Email">
+                <span class="focus-input100"></span>
+                <span class="symbol-input100"></span>
+              </div>
+    
+              <div class="wrap-input100 validate-input" data-validate = "Password is required">
+                <input class="input100" required type="password" name="password" placeholder="Пароль">
+                <span class="focus-input100"></span>
+                <span class="symbol-input100"></span>
+              </div>
+              
+              <div class="container-login100-form-btn">
+                <input class="login100-form-btn" type="submit" value="Войти">
+              </div>
+    
+              <div class="text-center">
+                <a class="txt2" href="{{url_for('register')}}">Зарегистрироваться</a>
+              </div>
+            </form>
+          </div>
+          <br><br>
+    </div>
+  </body>
+</html>

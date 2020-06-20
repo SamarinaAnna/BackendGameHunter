@@ -1,28 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Main page</title>
-</head>
-<body>
-<h2>Game</h2>
-{% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-<form method="post" action="/add_message">
-    <input type="date" name="date">
-    <input type="time" name="time">
-    <input type="text" name="place">
-    <input type="number" name="quantity">
-    <input type="text" name="game_name">
-    <input type="text" name="duration">
-    <input type="text" name="description">
-    <button type="submit">Добавить объявление</button>
-</form>
+{% extends "portal.html" %}
 
-<a href="{{url_for('get_person')}}">Мой профиль</a>
-<a href="{{url_for('my_ad')}}">Мои объявления</a>
-<a href="{{url_for('form_for_add_ad')}}">Создать объявление</a>
-<a href="{{url_for('all_ad')}}">Все объявления</a>
-<a href="{{url_for('logout')}}">Выход</a>
+{% block title %}GH | Create ad{% endblock %}
 
-</body>
-</html>
+{% block content %}
+  <div class="ad-form" action="/add_message" method="post">
+    <span class="ad-form-title">
+      Создать объявление
+    </span>
+    <form class="scroll_div" action="/add_message" method="post">
+      {% if error %}<div class=error>Ошибка: {{error}}</div>{% endif %}
+
+      <div class="wrap-input-ad">
+        <input class="input-ad" required  type="date" name="date" placeholder="Дата">
+      </div>
+      <div class="wrap-input-ad">
+        <input class="input-ad" required  type="time" name="time" placeholder="Время">
+      </div>
+      <div class="wrap-input-ad">
+        <input class="input-ad" required  type="text" name="place" placeholder="Место">
+      </div>
+      <div class="wrap-input-ad">
+        <input class="input-ad" required type="number" min="1" name="quantity" placeholder="Количество игроков">
+      </div>
+      <div class="wrap-input-ad">
+        <input class="input-ad" required  type="text" name="game_name" placeholder="Название игр">
+      </div>
+      <div class="wrap-input-ad">
+        <input class="input-ad" required  type="text" name="duration" placeholder="Предполагаемая длительность">
+      </div>
+      <div class="wrap-input-ad">
+        <input class="input-ad" type="text" name="description" id="descriptionCr" placeholder="Описание">
+      </div>
+      <input class="menu-btn ad-form-btn" type="submit" value="Разместить">
+    </form>
+  </div>
+{% endblock %}

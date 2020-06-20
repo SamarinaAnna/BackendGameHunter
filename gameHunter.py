@@ -82,19 +82,20 @@ def RecordingAnAd(idAd, idUser):
         list3 = []
         list3 = coll1.find_one({"_id": idAd['_id']}, {"_id": 0, "recordedPlayers": 1})
         itog = list3['recordedPlayers']
-        if (dataUser == itog[0]):
-            print("Такой пользователь уже записан")
-            return None
-        else:
-            for person in itog:
-                if (dataUser == person):
-                    print("Такой пользователь уже записан")
-                    return None
-            res = coll.find_one({"_id": idUser['_id']}, {"password": 0})
-            # добавляем пользователя в записанных игроков
-            itog.append(res)
-            coll1.update_one({"_id": idAd['_id']}, {"$set": {"recordedPlayers": itog}})
-            return coll1.find_one({"_id": idAd['_id']})
+        #if (dataUser == itog[0]):
+         #   print("Такой пользователь уже записан")
+          #  return None
+        #else:
+        for person in itog:
+            if (dataUser == person):
+                print("Такой пользователь уже записан")
+                return None
+        res = coll.find_one({"_id": idUser['_id']}, {"password": 0})
+        # добавляем пользователя в записанных игроков
+        itog.append(res)
+        coll1.update_one({"_id": idAd['_id']}, {"$set": {"recordedPlayers": itog}})
+        return coll1.find_one({"_id": idAd['_id']})
+
     else:
         print("Набрано максимальное количество людей")
         return None

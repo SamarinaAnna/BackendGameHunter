@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <link rel="icon" href="{{ url_for( 'static', filename='image/em.ico', v=1)}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='css/normalize.css', v=1)}}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='css/GH.css', v=1)}}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='css/GH_P.css', v=1)}}" type="text/css">
+  </head>
+
+  <body background="{{ url_for( 'static', filename='image/fon1.jpg', v=1)}}"> 
+    <div>
+        <img class="pic" name = 'img' src = "{{ url_for( 'static', filename='image/top.png')}}"/>
+
+          <div class="wrap-portal">
+              <div class="menu" >
+                <a class="menu-btn a-btn"  href="{{url_for('get_person')}}">Мой профиль</a>
+                <a class="menu-btn a-btn"  href="{{url_for('my_ad')}}">Мои объявления</a>
+                <a class="menu-btn a-btn"  href="{{url_for('form_for_add_ad')}}">Создать объявление</a>
+                <a class="menu-btn a-btn"  href="{{url_for('all_ad')}}">Все объявления</a>
+                <a class="menu-btn a-btn"  href="{{url_for('logout')}}">Выход</a>
+
+                <div class ="bush" data-tilt>
+                  <img src="{{ url_for( 'static', filename='image/bush.png')}}">
+                </div>
+              </div>
+
+              <div class="data" id="results">
+                {% block content %}{% endblock %}
+              </div>
+          </div>
+          <br><br>
+    </div>
+  </body>
+</html>

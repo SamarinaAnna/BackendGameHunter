@@ -41,13 +41,13 @@ def login():
         k = gameHunter.inputUser(request.form['username'], request.form['password'])
         if k:
             session['logged_in'] = True
-            flash('You were logged in')
+            #flash('You were logged in')
             g.user = k
             global user_string
             user_string = k
             #print(user_string)
             return redirect(url_for('get_person'))
-        else: error = 'Invalid username or password'
+        else: error = 'Неправильный логин или пароль!'
     return render_template('login.html', error=error)
 
 
@@ -60,20 +60,31 @@ def register():
     password = request.form.get('password')
     password2 = request.form.get('password2')
 
+    name_emp = name
+    surname_emp = surname
+    email_emp = email
+    password_emp = password
+
     if request.method == 'POST':
         if not (password or password2):
-            flash('Please, fill all fields!')
-        elif not name or not surname or not email or name.isspace() or surname.isspace() or surname.isspace():
-            flash('Please, fill all fields!')
+            flash('Пожалуйста, заполните все поля!')
+        elif not name or not surname or not email:
+            flash('Пожалуйста, заполните все поля!')
+        elif (len(name_emp.replace(" ", "")) == 0 or len(surname_emp.replace(" ", "")) == 0 or len(email_emp.replace(" ", "")) == 0 or len(password_emp.replace(" ", "")) == 0):
+            flash('Пожалуйста, заполните все поля!')
+        elif (gameHunter.coll.find_one({"email": str(email)}, {"email": 1, "_id": 0})):
+            flash('Такой email уже существует!')
+        elif(len(password) < 3):
+            flash('Пароль должен содержать не менее 3-х символов')
         elif password != password2:
-            flash('Passwords are not equal!')
+            flash('Пароль не совпадает!')
         else:
             gameHunter.registrationUser(str(name), str(surname), str(phone), str(email), password)
 
             k = gameHunter.inputUser(str(email), password)
             if k:
                 session['logged_in'] = True
-                flash('You were logged in')
+                #flash('You were logged in')
                 g.user = k
                 global user_string
                 user_string = k
@@ -85,28 +96,45 @@ def register():
 #профиль пользователя
 @app.route('/get_person', methods=['GET'])
 def get_person():
-    return render_template('get_person.html', user=user_string)
+    global user_string
+    if user_string != "":
+        return render_template('get_person.html', user=user_string)
+    else:
+        return render_template('login.html')
 
 
 #объявления конкретного пользователя (залогиневшегося)
 @app.route('/my_ad', methods=['GET'])
 def my_ad():
     global user_string
-    t = gameHunter.SpecificUserAds(gameHunter.coll.find_one({"_id": user_string['_id']}, {"_id": 1}))
-    return render_template('my_ad.html', messages=t)
+    if user_string != "":
+        t = gameHunter.SpecificUserAds(gameHunter.coll.find_one({"_id": user_string['_id']}, {"_id": 1}))
+        return render_template('my_ad.html', messages=t)
+    else:
+        return render_template('login.html')
 
 
 #страница с формами для добавления объявления
 @app.route('/form_for_add_ad', methods=['GET', 'POST'])
 def form_for_add_ad():
-    return render_template('form_for_add_ad.html')
+    global user_string
+    if user_string != "":
+        return render_template('form_for_add_ad.html')
+    else:
+        return render_template('login.html')
 
 
 #страница с объявлениями
 @app.route('/all_ad', methods=['GET'])
 def all_ad():
-    u = gameHunter.AdsDateSort()
-    return render_template('all_ad.html', messages=u)
+    global user_string
+    if user_string != "":
+        u = gameHunter.AdsDateSort()
+        for_status = user_string
+        return render_template('all_ad.html', messages=u, for_status=for_status)
+    else:
+        return render_template('login.html')
+
 
 #страница с объявлениями, на которые записан пользователь
 @app.route('/all_ad_on_record', methods=['GET'])
@@ -129,7 +157,7 @@ def all_ad_on_record():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    flash('You were logged out')
+    #flash('You were logged out')
     #g.user = None
     global user_string
     user_string = ""
@@ -154,11 +182,17 @@ def add_message():
         description = str(request.form['description'])
         recordedPlayers = []
 
+        date_emp = date
+        time_emp = time
+        place_emp = place
+        nameGame_emp = nameGame
+        duration_emp = duration
+
         if request.method == 'POST':
             if not date or not time or not place or not duration or not quantityPlayers or not nameGame:
-                error = 'Please, fill all fields!'
-            elif date.isspace() or time.isspace() or place.isspace() or duration.isspace() or quantityPlayers.isspace() or nameGame.isspace():
-                error = 'Please, fill all fields!'
+                error = 'Пожалуйста, заполните все поля!'
+            elif (len(date_emp.replace(" ", "")) == 0 or len(time_emp.replace(" ", "")) == 0 or len(place_emp.replace(" ", "")) == 0 or len(nameGame_emp.replace(" ", "")) == 0 or len(duration_emp.replace(" ", "")) == 0):
+                error = 'Пожалуйста, заполните все поля!'
             else:
                 gameHunter.createAd(str(user_string['_id']), str(date), str(time), str(place), int(quantityPlayers),
                                     str(nameGame), str(duration), str(description), recordedPlayers)
@@ -207,7 +241,6 @@ def add_player(ad_id):
                 temp = i
 
         if temp['dataCreator']['_id'] != idUser['_id']:
-
             gameHunter.RecordingAnAd(idAd, idUser)
 
         return redirect(url_for('all_ad'))

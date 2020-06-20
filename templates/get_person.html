@@ -1,20 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Greetings</title>
-</head>
-<body>
-<h1>Hello, {{ user.name }}</h1>
+{% extends "portal.html" %}
 
-<h3>Gamer</h3>
-<div>{{ user.name }}&nbsp;{{ user.surname }} <b>#{{ user.phone }}</b> {{ user.email }}</div>
+{% block title %}GH | My profile{% endblock %}
 
-<a href="{{url_for('get_person')}}">Мой профиль</a>
-<a href="{{url_for('my_ad')}}">Мои объявления</a>
-<a href="{{url_for('form_for_add_ad')}}">Создать объявление</a>
-<a href="{{url_for('all_ad')}}">Все объявления</a>
-<a href="{{url_for('logout')}}">Выход</a>
-
-</body>
-</html>
+{% block content %}
+  <div class="ad-form">
+    <span class="ad-form-title">
+      Мой профиль
+    </span>
+      <div class="data_pr">
+        <div class="f_l_name">
+          {{user.name}} <br> {{user.surname}} <br> 
+        </div>
+        <div class="tel_email">
+          &#9993; Email: <br> {{user.email}} <br><br> &#9742; Телефон: <br> {{user.phone}}
+        </div>
+      </div>
+      <span class="im_pr">
+        <img  src = "{{ url_for( 'static', filename='image/cards.png')}}" />
+      </span>
+  </div>
+{% endblock %}
