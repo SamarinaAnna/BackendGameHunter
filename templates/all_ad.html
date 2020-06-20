@@ -8,7 +8,7 @@
 <body>
 <h3>Games list</h3>
 {% for message in messages %}
-<div>{{ message.date }}&nbsp;{{ message.time }} <b>#{{ message.place }}</b> {{ message.quantity }} {{ message.game_name }}
+<div>{{ message.date }}&nbsp;{{ message.time }} {{ message.place }} {{ message.quantity }} {{ message.game_name }}
 {{ message.duration }}  <br> {{ message.description }} <br>
     {% for player in message.recordedPlayers %}
         {{ player.name }}&nbsp;{{ player.surname }} <br>

@@ -74,7 +74,7 @@ def createAd(idCreator, date, time, place, quantityPlayers, nameGame, duration, 
 
 def RecordingAnAd(idAd, idUser):
     dlina = []
-    dlina = coll1.find_one({"_id": idAd['_id']}, {"_id": 0, "recordedPlayers": 1})#/////////////////////////////////////
+    dlina = coll1.find_one({"_id": idAd['_id']}, {"_id": 0, "recordedPlayers": 1})
     quantityElements = len(dlina['recordedPlayers'])
     dataUser = coll.find_one({"_id": idUser['_id']}, {"password": 0})
     proverka = coll1.find_one({"_id": idAd['_id']}, {"_id": 0, "quantityPlayers": 1})
@@ -82,10 +82,9 @@ def RecordingAnAd(idAd, idUser):
         list3 = []
         list3 = coll1.find_one({"_id": idAd['_id']}, {"_id": 0, "recordedPlayers": 1})
         itog = list3['recordedPlayers']
-        if (len(itog) == 1):
-            if (dataUser == itog[0]):
-                print("Такой пользователь уже записан")
-                return None
+        if (dataUser == itog[0]):
+            print("Такой пользователь уже записан")
+            return None
         else:
             for person in itog:
                 if (dataUser == person):
@@ -103,13 +102,13 @@ def RecordingAnAd(idAd, idUser):
 
 def UnsubscribeFromParticipation(idAd, idUser):
     dlina = []
-    dlina = coll1.find_one({"_id": idAd['_id']},{"_id":0, "recordedPlayers":1})
+    dlina = coll1.find_one({"_id": idAd['_id']}, {"_id": 0, "recordedPlayers": 1})
     dataRecordedPlayers = dlina['recordedPlayers']
-    dataUser = coll.find_one({"_id": idUser['_id']},{"password":0})
+    dataUser = coll.find_one({"_id": idUser['_id']}, {"password": 0})
     for person in dataRecordedPlayers:
-        if(dataUser == person):
+        if (dataUser == person):
             dataRecordedPlayers.remove(person)
-            coll1.update_one({"_id":idAd['_id']},{"$set":{"recordedPlayers": dataRecordedPlayers}})
+            coll1.update_one({"_id": idAd['_id']}, {"$set": {"recordedPlayers": dataRecordedPlayers}})
 
 
 def AdsDateSort():
@@ -143,3 +142,10 @@ def DeleteAd(idCreator, date, time, place, quantityPlayers, nameGame, duration):
                       "quantityPlayers": quantityPlayers, "nameGame": nameGame, "duration": duration})
 
 
+def RecordedAds(idUser):
+    dataUser = coll.find_one({"_id": idUser['_id']}, {"password": 0})
+    cur = coll1.find({"recordedPlayers": dataUser})
+    list1 = []
+    for doc in cur:
+        list1.append(doc)
+    return list1

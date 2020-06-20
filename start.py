@@ -64,7 +64,7 @@ def register():
     if request.method == 'POST':
         if not (password or password2):
             flash('Please, fill all fields!')
-        elif not name or not surname or not email:
+        elif not name or not surname or not email or name.isspace() or surname.isspace() or surname.isspace():
             flash('Please, fill all fields!')
         elif password != password2:
             flash('Passwords are not equal!')
