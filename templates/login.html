@@ -27,13 +27,21 @@
               {% if error %}<div class=error>Ошибка: {{ error }}</div>{% endif %}
     
               <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-                <input class="input100" required autocomplete="on" type="text" name="username" placeholder="Email">
+                {% if login %}
+                    <input class="input100" required autocomplete="on" value={% autoescape false %} {{ login | replace(" ", "&nbsp;") }} {% endautoescape %} type="text" name="username" placeholder="Email">
+                {% else %}
+                    <input class="input100" required autocomplete="on" type="text" name="username" placeholder="Email">
+                {% endif %}
                 <span class="focus-input100"></span>
                 <span class="symbol-input100"></span>
               </div>
     
               <div class="wrap-input100 validate-input" data-validate = "Password is required">
-                <input class="input100" required type="password" name="password" placeholder="Пароль">
+                {% if pas %}
+                    <input class="input100" required type="password" value={% autoescape false %} {{ pas | replace(" ", "&nbsp;") }} {% endautoescape %} name="password" placeholder="Пароль">
+                {% else %}
+                    <input class="input100" required type="password" name="password" placeholder="Пароль">
+                {% endif %}
                 <span class="focus-input100"></span>
                 <span class="symbol-input100"></span>
               </div>

@@ -31,37 +31,61 @@
               {% endwith %}
 
               <div class="wrap-input100 validate-input" >
-                <input class="input100" required type="text"  name="name" placeholder="Имя">
+                {% if name %}
+                    <input class="input100" required value={% autoescape false %} {{ name | replace(" ", "&nbsp;") }} {% endautoescape %} type="text"  name="name" placeholder="Имя">
+                {% else %}
+                    <input class="input100" required type="text"  name="name" placeholder="Имя">
+                {% endif %}
                 <span class="focus-input100"></span>
                 <span class="symbol-input100"></span>
               </div>
 
               <div class="wrap-input100 validate-input" >
-                <input class="input100" required  type="text" name="surname" placeholder="Фамилия">
+                {% if surname %}
+                    <input class="input100" required value={% autoescape false %} {{ surname | replace(" ", "&nbsp;") }} {% endautoescape %}  type="text" name="surname" placeholder="Фамилия">
+                {% else %}
+                    <input class="input100" required  type="text" name="surname" placeholder="Фамилия">
+                {% endif %}
                 <span class="focus-input100"></span>
                 <span class="symbol-input100"></span>
               </div>
 
               <div class="wrap-input100 validate-input" >
-                <input class="input100" type="text" name="phone" placeholder="Телефон (необязательно)">
+                {% if phone %}
+                    <input class="input100" value={% autoescape false %} {{ phone | replace(" ", "&nbsp;") }} {% endautoescape %} type="text" name="phone" placeholder="Телефон (необязательно)">
+                {% else %}
+                    <input class="input100" type="text" name="phone" placeholder="Телефон (необязательно)">
+                {% endif %}
                 <span class="focus-input100"></span>
                 <span class="symbol-input100"></span>
               </div>
     
               <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-                <input class="input100" required pattern=".*@.*" type="text" name="email" placeholder="Email">
+                {% if email %}
+                    <input class="input100" required value={% autoescape false %} {{ email | replace(" ", "&nbsp;") }} {% endautoescape %} pattern=".*@.*" type="text" name="email" placeholder="Email">
+                {% else %}
+                    <input class="input100" required pattern=".*@.*" type="text" name="email" placeholder="Email">
+                {% endif %}
                 <span class="focus-input100"></span>
                 <span class="symbol-input100"></span>
               </div>
     
               <div class="wrap-input100 validate-input" data-validate = "Password is required">
-                <input class="input100" required  type="password" name="password" placeholder="Пароль">
+                {% if password %}
+                    <input class="input100" required value={% autoescape false %} {{ password | replace(" ", "&nbsp;") }} {% endautoescape %}  type="password" name="password" placeholder="Пароль">
+                {% else %}
+                    <input class="input100" required  type="password" name="password" placeholder="Пароль">
+                {% endif %}
                 <span class="focus-input100"></span>
                 <span class="symbol-input100"></span>
               </div>
 
               <div class="wrap-input100 validate-input" data-validate = "Password is required">
-                <input class="input100" required  type="password" name="password2" placeholder="Повторите пароль">
+                {% if password2 %}
+                    <input class="input100" required value={% autoescape false %} {{ password2 | replace(" ", "&nbsp;") }} {% endautoescape %}  type="password" name="password2" placeholder="Повторите пароль">
+                {% else %}
+                    <input class="input100" required  type="password" name="password2" placeholder="Повторите пароль">
+                {% endif %}
                 <span class="focus-input100"></span>
                 <span class="symbol-input100"></span>
               </div>

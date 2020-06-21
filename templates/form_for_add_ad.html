@@ -11,25 +11,53 @@
       {% if error %}<div class=error>Ошибка: {{error}}</div>{% endif %}
 
       <div class="wrap-input-ad">
-        <input class="input-ad" required max="9999-12-31" type="date" name="date" placeholder="Дата">
+        {% if date %}
+            <input class="input-ad" required value={{date}} max="9999-12-31" type="date" name="date" placeholder="Дата">
+        {% else %}
+            <input class="input-ad" required max="9999-12-31" type="date" name="date" placeholder="Дата">
+        {% endif %}
       </div>
       <div class="wrap-input-ad">
-        <input class="input-ad" required  type="time" name="time" placeholder="Время">
+        {% if time %}
+            <input class="input-ad" required value={{time}}  type="time" name="time" placeholder="Время">
+        {% else %}
+            <input class="input-ad" required  type="time" name="time" placeholder="Время">
+        {% endif %}
       </div>
       <div class="wrap-input-ad">
-        <input class="input-ad" required  type="text" name="place" placeholder="Место">
+        {% if place %}
+            <input class="input-ad" required value={% autoescape false %} {{ place | replace(" ", "&nbsp;") }} {% endautoescape %} type="text" name="place" placeholder="Место">
+        {% else %}
+            <input class="input-ad" required  type="text" name="place" placeholder="Место">
+        {% endif %}
       </div>
       <div class="wrap-input-ad">
-        <input class="input-ad" required type="number" min="1" name="quantity" placeholder="Количество игроков">
+        {% if quantityPlayers %}
+            <input class="input-ad" required value={{quantityPlayers}} type="number" min="1" name="quantity" placeholder="Количество игроков">
+        {% else %}
+            <input class="input-ad" required type="number" min="1" name="quantity" placeholder="Количество игроков">
+        {% endif %}
       </div>
       <div class="wrap-input-ad">
-        <input class="input-ad" required  type="text" name="game_name" placeholder="Название игр">
+        {% if nameGame %}
+            <input class="input-ad" required value={% autoescape false %} {{ nameGame | replace(" ", "&nbsp;") }} {% endautoescape %}  type="text" name="game_name" placeholder="Название игр">
+        {% else %}
+            <input class="input-ad" required  type="text" name="game_name" placeholder="Название игр">
+        {% endif %}
       </div>
       <div class="wrap-input-ad">
-        <input class="input-ad" required  type="text" name="duration" placeholder="Предполагаемая длительность">
+        {% if duration %}
+            <input class="input-ad" required value={% autoescape false %} {{ duration | replace(" ", "&nbsp;") }} {% endautoescape %}  type="text" name="duration" placeholder="Предполагаемая длительность">
+        {% else %}
+            <input class="input-ad" required  type="text" name="duration" placeholder="Предполагаемая длительность">
+        {% endif %}
       </div>
       <div class="wrap-input-ad">
-        <input class="input-ad" type="text" name="description" id="descriptionCr" placeholder="Описание">
+        {% if description %}
+            <input class="input-ad" type="text" value={% autoescape false %} {{ description | replace(" ", "&nbsp;") }} {% endautoescape %}  name="description" id="descriptionCr" placeholder="Описание (необязательно)" >
+        {% else %}
+            <input class="input-ad" type="text" name="description" id="descriptionCr" placeholder="Описание (необязательно)">
+        {% endif %}
       </div>
       <input class="menu-btn ad-form-btn" type="submit" value="Разместить">
     </form>
