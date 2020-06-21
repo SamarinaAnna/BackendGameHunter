@@ -1,5 +1,4 @@
 .wrap-portal{
-  margin-top: 300px;
   width: 720px;
   min-height: 470px;
   
@@ -18,7 +17,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-top: 132px;
+  /*margin-top: 132px;*/
+  margin-top: 10%;
   padding: 2px 30px 2px 30px;
 }
 

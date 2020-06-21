@@ -124,7 +124,6 @@ iframe {
 [ login ]*/
 
 .wrap-login100 {
-  margin-top: 300px;
   width: 750px;
   
   background: #fff;
@@ -142,12 +141,12 @@ iframe {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-top: 132px;
+  /*margin-top: 132px;*/
+  margin-top: 10%;
   padding: 30px 70px 20px 25px;
 }
 
 .wrap-reg{
-  margin-top: 300px;
   width: 400px;
   
   background: #fff;
@@ -165,7 +164,8 @@ iframe {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-top: 132px;
+  /*margin-top: 132px;*/
+  margin-top: 10%;
   padding: 2px 30px 2px 30px;
 }
 
