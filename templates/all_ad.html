@@ -35,9 +35,10 @@
                     <a class="txt2 txt3" href="{{url_for('del_message', ad_id = message._id)}}">&#10006; Удалить </a>
                 {% elif status.st == "R" %}
                     <a class="txt2 txt3" href="{{url_for('dell_player', ad_id = message._id)}}">&#10008; Отписаться </a>
+                {% elif message.quantityPlayers == message.recordedPlayers|length %}
+                    <div class="error2">Нет свободных мест</div>
                 {% else %}
-                    <a class="txt2 txt3" href="{{url_for('add_player', ad_id = message._id)}}">&#10010; Записаться </a> &#160; &#160;
-                    <a class="txt2 txt3" href="{{url_for('dell_player', ad_id = message._id)}}">&#10008; Отписаться </a>
+                    <a class="txt2 txt3" href="{{url_for('add_player', ad_id = message._id)}}">&#10010; Записаться </a> 
                 {% endif %}
 
               </div>

@@ -302,6 +302,7 @@ iframe {
 
 .text-center{
   padding-top: 20px;
+  padding-bottom: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

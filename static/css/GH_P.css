@@ -250,13 +250,15 @@ p{
 
 .participants{
   margin-left: 20px;
+  width: 410px;
 }
 
 .text-btn-ads{
-  padding-top: 13px;
+  padding-top: 5px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 0;
   margin-right: 0;
   margin-left: auto;
 }
@@ -294,6 +296,16 @@ p{
   font-size: 16px;
   color: #f1832d;
   padding-bottom: 10px;
+  margin-top: 0;
+  text-align: center;
+}
+
+.error2{
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  color: #9c6a36;
+  padding-bottom: 0;
   margin-top: 0;
   text-align: center;
 }
